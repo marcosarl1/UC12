@@ -75,4 +75,34 @@ public class PacienteServicos {
         return pacDAO.buscarPaciente();
     }
 
+    // Método para validar CPF
+    public boolean validarCpf(String cpf) {
+        // Regex para validar o formato do CPF (xxx.xxx.xxx-xx
+        String cpfFormato = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}";
+        if (!cpf.matches(cpfFormato)) {
+            return false;
+        }
+        return true;
+    }
+
+    // Método para validar telefone
+    public boolean validarTelefone(String telefone) {
+        // Regex para validar o formato de telefone (xx) xxxx-xxxx ou (xx) xxxxx-xxxx
+        String telefoneFormato = "\\(\\d{2}\\) \\d{4,5}-\\d{4}";
+        if (!telefone.matches(telefoneFormato)) {
+            return false;
+        }
+        return true;
+    }
+
+    // Método para validar e-mail
+    public boolean validarEmail(String email) {
+        // Regex para validar o formato de email
+        String emailFormato = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        if (!email.matches(emailFormato)) {
+            return false;
+        }
+        return true;
+    }
+
 }

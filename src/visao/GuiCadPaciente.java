@@ -163,35 +163,10 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private boolean validarCpf(String cpf) {
-        // Regex para validar o formato do CPF (xxx.xxx.xxx-xx
-        String cpfFormato = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}";
-        if (!cpf.matches(cpfFormato)) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarTelefone(String telefone) {
-        // Regex para validar o formato de telefone (xx) xxxx-xxxx ou (xx) xxxxx-xxxx
-        String telefoneFormato = "\\(\\d{2}\\) \\d{4,5}-\\d{4}";
-        if (!telefone.matches(telefoneFormato)) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validarEmail(String email) {
-        // Regex para validar o formato de email
-        String emailFormato = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        if (!email.matches(emailFormato)) {
-            return false;
-        }
-        return true;
-    }
 
     private boolean verificarCamposObrigatorios(){
         List<String> mensagensErro = new ArrayList<>();
+        PacienteServicos ps = ServicosFactory.getPacienteServicos();
 
         if (jtNome.getText().isEmpty()) {
             mensagensErro.add("Infome o nome do paciente.");
@@ -199,7 +174,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
 
         if (jtCpf.getText().isEmpty()) {
             mensagensErro.add("Informe o CPF do paciente.");
-        } else if (!validarCpf(jtCpf.getText())) {
+        } else if (!ps.validarCpf(jtCpf.getText())) {
             mensagensErro.add("CPF inválido. O formato correto é xxx.xxx.xxx-xx.");
         }
 
@@ -209,11 +184,11 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
 
         if (jtTelefone.getText().isEmpty()) {
             mensagensErro.add("Informe o número de telefone do pacuiente");
-        } else if (!validarTelefone(jtTelefone.getText())) {
+        } else if (!ps.validarTelefone(jtTelefone.getText())) {
             mensagensErro.add("Telefone inválido. O formato correto é (xx) xxxx-xxxx ou (xx) xxxxx-xxxx.");
         }
 
-        if (!validarEmail(jtEmail1.getText())) {
+        if (!jtEmail1.getText().isEmpty() && !ps.validarEmail(jtEmail1.getText())) {
             mensagensErro.add("Email inválido. O formato correto é usuario@dominio.com.");
         }
 
@@ -226,7 +201,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
         }
 
         if (!mensagensErro.isEmpty()) {
-            String mensagemCompleta = String.join("\n", mensagensErro);
+            String mensagemCompleta = "Por favor, corrija os seguintes erros:\n\n" + String.join("\n", mensagensErro);
             JOptionPane.showMessageDialog(this, mensagemCompleta);
             return false;
         }
