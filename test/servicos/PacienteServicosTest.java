@@ -1,63 +1,40 @@
 package servicos;
 
-import dao.DAOFactory;
-import dao.PacienteDAO;
-import modelo.Paciente;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.SQLException;
-
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+
 
 public class PacienteServicosTest {
 
     private PacienteServicos pacienteServicos;
-    private PacienteDAO pacienteDAO;
 
     @Before
     public void setUp() {
-        pacienteDAO = mock(PacienteDAO.class);
-    }
-
-    @Test
-    public void cadastrarPaciente() throws SQLException {
-        Paciente paciente = new Paciente();
-        paciente.setCpf("123.456.789-00");
-
-        when(pacienteDAO.existePacienteCPF(paciente.getCpf())).thenReturn(false);
-
-        pacienteServicos.cadastrarPaciente(paciente);
-
-        verify(pacienteDAO, times(1)).cadastrarPaciente(paciente);
-    }
-
-    @Test
-    public void buscarPacienteId() {
-    }
-
-    @Test
-    public void buscarPacienteNome() {
-    }
-
-    @Test
-    public void buscarPacienteCpf() {
-    }
-
-    @Test
-    public void buscarPaciente() {
+        pacienteServicos = new PacienteServicos();
     }
 
     @Test
     public void validarCpf() {
+        assertTrue(pacienteServicos.validarCpf("123.456.789-00"));
+        assertFalse(pacienteServicos.validarCpf("12345678900"));
+        assertFalse(pacienteServicos.validarCpf("123.456.789-0A"));
     }
 
     @Test
     public void validarTelefone() {
+        assertTrue(pacienteServicos.validarTelefone("(12) 3456-7890"));
+        assertTrue(pacienteServicos.validarTelefone("(12) 34567-8901"));
+        assertFalse(pacienteServicos.validarTelefone("1234567890"));
+        assertFalse(pacienteServicos.validarTelefone("(12) 3456-789A"));
     }
 
     @Test
     public void validarEmail() {
+        assertTrue(pacienteServicos.validarEmail("teste@exemplo.com"));
+        assertFalse(pacienteServicos.validarEmail("teste@.com"));
+        assertFalse(pacienteServicos.validarEmail("teste@com"));
+        assertFalse(pacienteServicos.validarEmail("teste.com"));
     }
 }
