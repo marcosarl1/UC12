@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import dao.ConvenioDAO;
+import modelo.Convenio;
 import modelo.Paciente;
+import servicos.ConvenioServicos;
 import servicos.PacienteServicos;
 import servicos.ServicosFactory;
 
@@ -14,7 +18,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
      com o nome das colunas */
     DefaultTableModel dtm = new DefaultTableModel(
             new Object[][]{},
-            new Object[]{"Código", "Nome", "CPF", "Telefone"});
+            new Object[]{"Código", "Nome", "CPF", "Telefone", "Convênio"});
 
     public GuiJTableBuscaPaciente() {
         initComponents();
@@ -57,7 +61,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Código", "Nome", "CPF", "Telefone"
+                "Código", "Nome", "CPF", "Telefone", "Convênio"
             }
         ));
         jtablePaciente.getTableHeader().setReorderingAllowed(false);
@@ -160,8 +164,10 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
     /* Método responsável por popular novos dados na tabela. */
     private void preencherTabela() {
         try {
-            //Buscando objeto PacienteServicos     
+            //Buscando objeto PacienteServicos
             PacienteServicos ps = ServicosFactory.getPacienteServicos();
+
+            ConvenioDAO convenioDAO = new ConvenioDAO();
 
             /* Criando um ArrayList<Paciente> vazio
          para receber o ArrayList com os dados */
@@ -177,11 +183,17 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
             /* For que preenche o modelo de tabela (dtm) buscando 
          dados do ArrayList chamado p. */
             for (int i = 0; i < pac.size(); i++) {
+                Paciente paciente = pac.get(i);
+
+                Convenio convenio = convenioDAO.buscarConvenioPorId(paciente.getConvenio());
+                String nomeConvenio = convenio != null ? convenio.getNomeConvenio() : "Sem convênio";
+
                 dtm.addRow(new String[]{
                     String.valueOf(pac.get(i).getIdPaciente()),
                     String.valueOf(pac.get(i).getNome()),
                     String.valueOf(pac.get(i).getCpf()),
-                    String.valueOf(pac.get(i).getTelefone()),});
+                    String.valueOf(pac.get(i).getTelefone()),
+                    nomeConvenio});
             }//fecha for
 
             /* Adicionando o modelo de tabela 

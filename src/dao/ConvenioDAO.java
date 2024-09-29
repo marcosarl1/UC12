@@ -129,4 +129,27 @@ public class ConvenioDAO {
 
     }
 
+    public Convenio buscarConvenioPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM CONVENIO WHERE ID_CONVENIO = ?";
+
+        try (Connection con = conexao.getConexao();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setInt(1, id);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    Convenio convenio = new Convenio();
+                    convenio.setIdConvenio(rs.getInt("ID_CONVENIO"));
+                    convenio.setNomeConvenio(rs.getString("NOME_CONVENIO"));
+                    convenio.setTempoCarencia(rs.getString("TEMPO_CARENCIA"));
+                    convenio.setCnpj(rs.getString("CNPJ"));
+                    return convenio;
+                }
+            }
+
+        } catch (SQLException se) {
+            throw new SQLException("Erro ao buscar dados do Banco! " + se.getMessage());
+        }
+        return null;
+    }
+
 }
