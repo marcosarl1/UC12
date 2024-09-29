@@ -30,5 +30,8 @@ public class ConvenioDAOTest {
         Convenio convenio = convenioDAO.buscarConvenioFiltro("Unimed");
         assertNotNull(convenio);
         assertEquals("Unimed", convenio.getNomeConvenio());
+
+        Convenio convenioNulo = convenioDAO.buscarConvenioFiltro("Convenio Nulo");
+        assertNull(convenioNulo);
     }
 }
