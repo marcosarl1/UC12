@@ -1,0 +1,16 @@
+package dao;
+
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+public class ConvenioDAOTest {
+
+    @Test
+    public void buscarcConvenios() {
+    }
+
+    @Test
+    public void buscarConvenioFiltro() {
+    }
+}
